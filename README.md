@@ -39,8 +39,10 @@ ingestion, db = pdsql.ingest([df1, df2, ...])
 
 # ask some questions
 for question in [
-    "What is the survival rate?",
-    "Generate an interesting query"
+    "Show the categories for products sold in Italy.",
+    "Return the top 10 customers with highest turnover last month, sorted alphabetically by last name.",
+    "What's the average number of items sold per purchase?",
+    "Generate an interesting query."
 ]:
     sql = pdsql.text2sql(question, ingestion)  # generate query
     result = pd.read_sql(sql, db)              # execute query
