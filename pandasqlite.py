@@ -160,7 +160,11 @@ def ingest(dfs: List[pd.DataFrame] | str, llm_callback=watsonxai):
                  "INPUT:"
         result = llm_callback(prompt + json.dumps(snapshot_data(df), separators=(',', ':')) + "\nOUTPUT:")
         try:
+            if not result.strip().startswith("["):
+                result = "[" + result
             ingestion_result["sql_curriculum"] = json.loads(result)
+            for question in ingestion_result["sql_curriculum"]:
+                question["sql"] = question["sql"].replace("table", "'" + ingestion_result["hash"] + "'").strip()
         except json.decoder.JSONDecodeError as e:
             logger.error(e)
 
@@ -220,7 +224,7 @@ def text2sql(input: str, ingestions, llm_callback=watsonxai):
     prompt += "[/INSTRUCTION]" + "\n\n"
 
     # QUESTIONS
-    for ingestions in ingestions:
+    for ingestion in ingestions:
         if "sql_curriculum" in ingestion and ingestion["sql_curriculum"] is not None:
             for i in range(0, len(ingestion["sql_curriculum"])):
                 prompt += "[QUESTION]" + "\n"
