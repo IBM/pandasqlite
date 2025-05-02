@@ -18,6 +18,8 @@ logger = logging.getLogger("pandasqlite")
 client = None
 llm_is_sane = False
 
+CACHE_DIR = os.getenv("CACHE_DIR", "cache")
+
 
 def watsonxai(input: str):
     logger.debug("START: watsonxai")
@@ -77,9 +79,9 @@ def ingest(dfs: List[pd.DataFrame] | str, llm_callback=watsonxai):
     # check if ingestion is pickled
     logger.debug("Checking cache availability...")
     os.makedirs("cache", exist_ok=True)
-    if os.path.exists(f'cache/{dfs_hash}.pkl'):
+    if os.path.exists(f'{CACHE_DIR}/{dfs_hash}.pkl'):
         logger.info("Loading ingestion from cache...")
-        with open(f'cache/{dfs_hash}.pkl', 'rb') as f:
+        with open(f'{CACHE_DIR}/{dfs_hash}.pkl', 'rb') as f:
             ingestion_results = pickle.load(f)
             return ingestion_results, engine, dfs_hash
 
@@ -171,7 +173,7 @@ def ingest(dfs: List[pd.DataFrame] | str, llm_callback=watsonxai):
         ingestion_results.append(ingestion_result)
 
     logger.info("Cashing ingestion result...")
-    with open(f'cache/{dfs_hash}.pkl', 'wb') as f:
+    with open(f'{CACHE_DIR}/{dfs_hash}.pkl', 'wb') as f:
         pickle.dump(ingestion_results, f)
 
     logger.debug("END: ingest")

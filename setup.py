@@ -9,7 +9,7 @@ setup(
     url="https://github.com/IBM/PandaSQLite",
     python_requires='>=3.10',
     packages=find_packages(
-        include=['.']
+        include=['pandasqlite']
     ),
     install_requires=[
         "PyMySQL==1.1.1",

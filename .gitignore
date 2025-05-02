@@ -1,3 +1,6 @@
 .idea/
 cache/
 pandasqlite_test.log
+__pycache__/
+build/
+pandasqlite.egg-info/
