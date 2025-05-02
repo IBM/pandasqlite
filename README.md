@@ -28,7 +28,7 @@ pip install .
 ```python
 import json
 import pandas as pd
-import pandasqlite as pdsql
+from pandasqlite import pandasqlite as pdsql
 
 # load CSV as pandas dataframe(s)
 df1 = pd.read_csv("my.csv")
