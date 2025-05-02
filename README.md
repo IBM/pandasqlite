@@ -5,7 +5,7 @@ Light-weight Text-2-SQL on Pandas Data Frames
 
 1. Clone repository
 ```bash
-git clone git@github.com:IBM/PandaSQLite.git
+git clone git@github.com:IBM/pandasqlite.git
 ```
 
 2. Install PandaSQLite
@@ -67,6 +67,6 @@ sql = pdsql.text2sql(question, ingestion, my_model_callback)  # generate query w
 ``` 
 
 # How to cite
-> Daniel Karl I. Weidele and Gaetano Rossiello. PandaSQLite: Light-weight Text-2-SQL on Pandas Data Frames in Python. GitHub, https://github.com/IBM/PandaSQLite. 2025.
+> Daniel Karl I. Weidele and Gaetano Rossiello. PandaSQLite: Light-weight Text-2-SQL on Pandas Data Frames in Python. GitHub, https://github.com/IBM/pandasqlite. 2025.
 
 
