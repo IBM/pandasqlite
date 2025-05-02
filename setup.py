@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='PandaSQLite',
+    name='pandasqlite',
     version='0.1.0',
     author="Daniel Karl I. Weidele",
     author_email="daniel.karl@ibm.com",
