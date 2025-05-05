@@ -6,7 +6,7 @@ setup(
     author="Daniel Karl I. Weidele",
     author_email="daniel.karl@ibm.com",
     description="Text-2-SQL on Pandas Data Frames",
-    url="https://github.com/IBM/PandaSQLite",
+    url="https://github.com/IBM/pandasqlite",
     python_requires='>=3.10',
     packages=find_packages(
         include=['pandasqlite']
