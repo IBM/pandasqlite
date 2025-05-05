@@ -35,7 +35,7 @@ df1 = pd.read_csv("my.csv")
 df2 = ...
 
 # ingest dataframe(s)
-ingestion, db = pdsql.ingest([df1, df2, ...])
+ingestion, db, _ = pdsql.ingest([df1, df2, ...])
 
 # ask some questions
 for question in [
