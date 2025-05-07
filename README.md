@@ -22,6 +22,7 @@ pip install .
 4. Set environment variables:
 - `WXAI_PROJECT_ID` - Set to your watsonx.ai project ID
 - `WXAI_API_KEY` - Set to your watsonx.ai API key
+- `PANDASQLITE_CACHE_DIR` - (optional) Set the cache directory location 
 
 ## Using PandaSQLite in Python:
 

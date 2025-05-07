@@ -18,7 +18,7 @@ logger = logging.getLogger("pandasqlite")
 client = None
 llm_is_sane = False
 
-CACHE_DIR = os.getenv("CACHE_DIR", "cache")
+CACHE_DIR = os.getenv("PANDASQLITE_CACHE_DIR", "cache")
 
 
 def watsonxai(input: str):
