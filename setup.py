@@ -13,7 +13,7 @@ setup(
     ),
     install_requires=[
         "PyMySQL==1.1.1",
-        "ibm_watsonx_ai==1.2.10",
+        "ibm_watsonx_ai==1.3.20",
         "sqlalchemy==2.0.38"
     ]
 )

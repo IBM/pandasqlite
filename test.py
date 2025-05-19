@@ -1,6 +1,6 @@
 import logging, sys, os, json
 import pandas as pd
-import pandasqlite as pdsql
+from pandasqlite import pandasqlite as pdsql
 
 logging.basicConfig(
     # level=logging.INFO,
