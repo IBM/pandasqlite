@@ -7,7 +7,7 @@ setup(
     author_email="daniel.karl@ibm.com",
     description="Text-2-SQL on Pandas Data Frames",
     url="https://github.com/IBM/pandasqlite",
-    python_requires='>=3.10',
+    python_requires='>=3.9',
     packages=find_packages(
         include=['pandasqlite']
     ),
