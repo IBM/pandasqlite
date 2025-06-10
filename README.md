@@ -1,4 +1,4 @@
-# PandaSQLite - Query CSV files with Natural Language with the precision of SQL
+# PandaSQLite - Query CSV files in Natural Language with precision of SQL
 Discover the power of Light-weight Text-2-SQL on Pandas Data Frames, a user-friendly Python module that transforms natural language questions into SQL queries for effortless data analysis. With the pandasqlite library, you can load CSV files into Pandas DataFrames, ingest them, and query data using simple questions like "What are the categories for products sold in Italy?" or "Who are the top 10 customers by turnover last month?" The tool generates and executes SQL queries instantly, returning results in JSON format for seamless integration into your workflows. Perfect for data analysts and developers, this lightweight solution eliminates the need for complex SQL knowledge or database setup, making it ideal for quick insights from sales, customer, or inventory data. Optimized for simplicity, it streamlines data exploration, boosts productivity, and empowers users to uncover valuable insights with minimal code, enhancing efficiency in any data-driven project.
 
 ## Installation 
