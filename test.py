@@ -53,3 +53,11 @@ if __name__ == "__main__":
                 logger.info("\t\t" + json.dumps(result.sample(5).to_json()) + "\n")
             else:
                 logger.info("\t\t" + json.dumps(result.to_json()) + "\n")
+
+        # export dataframe by index position (e.g. 2nd and 4th)
+        dfs_exp = pdsql.export([ingestion[1], ingestion[3]], db)
+        logger.info(f'Exported {len(dfs_exp)} dataframes.')
+
+        # export dataframe by hash
+        dfs_exp = pdsql.export([i for i in ingestion if i["hash"] == "1eeb622f464ab027744d7c5dd96a6826"], db)
+        logger.info(f'Exported {len(dfs_exp)} dataframes.')
