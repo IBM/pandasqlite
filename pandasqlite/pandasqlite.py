@@ -1,8 +1,5 @@
 import json
 from typing import List
-from ibm_watsonx_ai import APIClient
-from ibm_watsonx_ai import Credentials
-from ibm_watsonx_ai.foundation_models import ModelInference
 import pandas as pd
 import pickle
 import re
@@ -13,16 +10,35 @@ import logging
 from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.schema import CreateTable
 
+CACHE_DIR = os.getenv("PANDASQLITE_CACHE_DIR", "cache")
+
 logger = logging.getLogger("pandasqlite")
 
 client = None
 llm_is_sane = False
 
-CACHE_DIR = os.getenv("PANDASQLITE_CACHE_DIR", "cache")
+
+def ollama(input: str):
+    logger.debug("START: ollama")
+    import ollama
+    from mellea.backends import model_ids, ModelOption
+    import mellea
+    m = mellea.start_session(model_id="qwen3.5:2b")
+    logger.debug(input)
+    result = m.instruct(input, model_options={
+        ModelOption.MAX_NEW_TOKENS: 4096
+    }).value
+    result = result.split("\n\n")[0]
+    logger.debug("output:" + result)
+    logger.debug("END: ollama")
+    return result
 
 
 def watsonxai(input: str):
     logger.debug("START: watsonxai")
+    from ibm_watsonx_ai import APIClient
+    from ibm_watsonx_ai import Credentials
+    from ibm_watsonx_ai.foundation_models import ModelInference
     global client
     wxai_project_id = os.getenv("WXAI_PROJECT_ID")
     wxai_api_key = os.getenv("WXAI_API_KEY")
@@ -34,7 +50,9 @@ def watsonxai(input: str):
         client = APIClient(credentials)
     model = ModelInference(
         # model_id="ibm/granite-3-2-8b-instruct",
-        model_id="meta-llama/llama-3-405b-instruct",
+        model_id="meta-llama/llama-4-maverick-17b-128e-instruct-fp8",
+        # model_id="mistralai/mistral-medium-2505",
+        # model_id="openai/gpt-oss-120b",
         api_client=client,
         project_id=wxai_project_id,
         params={
@@ -48,7 +66,7 @@ def watsonxai(input: str):
     )
     logger.debug(input)
     result = model.generate_text("input:" + input)
-    result = result.split("\n\n")[0]
+    result = result.strip().split("\n\n")[0]
     logger.debug("output:" + result)
     logger.debug("END: watsonxai")
     return result
@@ -60,12 +78,12 @@ def ingest(dfs: List[pd.DataFrame] | str, llm_callback=watsonxai):
     same data is provided twice, a lookup from cache triggers also by computing the hash over the data.
     :param dfs: List of Pandas Dataframes or a single String representing the hash value result of a previous ingestion.
     :param llm_callback: Optional custom callback to resolve language model requests through.
-    Defaults to pandasqlite.watsonxai.
+    Defaults to mistral-small on pandasqlite.mellea. Other built-in option is pandasqlite.watsonxai. You can use a custom function, too.
     :return: triple of (1) ingestion result, (2) db engine, (3) hash
     """
     logger.debug("START: ingest")
     # step 0: sanity check
-    sanity_check(llm_callback)
+    # sanity_check(llm_callback)
 
     # use or compute hash over dfs
     if isinstance(dfs, str):
@@ -272,10 +290,12 @@ def sanity_check(llm_callback=watsonxai):
     # test model for sanity
     logger.info("Testing model sanity...")
     try:
-        response = watsonxai(
-            "<system>If you are a language model, write 'YES' as the next token, followed by 2 empty lines.<system>"
+        response = llm_callback(
+            "If you are a language model, write 'YES' as the next token, followed by 2 empty lines."
         )
-    except:
+        response = response.split("\n\n")[0]
+    except Exception as e:
+        logging.error("An error occurred", exc_info=True)
         logger.info("××× FAILED ×××")
         logger.info(
             "Token generation failed. You need to provide a reasonable " +

@@ -14,7 +14,9 @@ setup(
     install_requires=[
         "PyMySQL==1.1.1",
         "ibm_watsonx_ai==1.3.20",
-        "sqlalchemy==2.0.38"
+        "sqlalchemy==2.0.38",
+        "mellea==0.4.1",
+        "ollama==0.6.1"
     ]
 )
 

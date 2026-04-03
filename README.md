@@ -14,15 +14,22 @@ cd pandasqlite
 pip install .
 ```
 
-3. Choose language model:
+3. Set environment variables:
 
-- Get your watsonx.ai API key from https://www.ibm.com/products/watsonx-ai, then continue with step 4.
-- OR use a custom language model (see below)
+- `PANDASQLITE_CACHE_DIR` - (optional) Set the cache directory location
 
-4. Set environment variables:
-- `WXAI_PROJECT_ID` - Set to your watsonx.ai project ID
-- `WXAI_API_KEY` - Set to your watsonx.ai API key
-- `PANDASQLITE_CACHE_DIR` - (optional) Set the cache directory location 
+4. Choose language model backend (see section below for more details):
+   1. Ollama (default, local)
+        ```
+        # Manual installation required! 
+        # Download from https://ollama.com/
+        ```
+   2. watsonx.ai (hosted)
+      - Get [watsonx.ai](https://www.ibm.com/products/watsonx-ai) API key
+      - Set environment variables:
+        - `WXAI_PROJECT_ID` - Set to your watsonx.ai project ID
+        - `WXAI_API_KEY` - Set to your watsonx.ai API key 
+   3. Custom language model
 
 ## Using PandaSQLite in Python:
 
@@ -53,8 +60,26 @@ for question in [
 
 You can also take a look at this [example](https://github.com/IBM/PandaSQLite/blob/main/test.py).
 
-## Custom Language Model
-Not ready to use watsonx.ai? You can plug-in a custom language model callback function as a parameter:
+## Choosing a Language Model Backend
+
+### Ollama Language Model (Local)
+By default, PandaSQLite attempts to connect to a local Ollama Server. You will have to download and install this software from https://ollama.com/.
+
+
+### watsonx.ai Language Model (Remote/Hosted)
+If you do not have the resources to run a language model with Ollama locally, you may find this hosted option attractive:
+- Get [watsonx.ai](https://www.ibm.com/products/watsonx-ai) API key
+  - `WXAI_PROJECT_ID` - Set to your watsonx.ai project ID
+  - `WXAI_API_KEY` - Set to your watsonx.ai API key
+
+```python
+pdsql.ingest([df1, df2, ...], pdsql.watsonxai)              # ingest with watsonx.ai
+
+sql = pdsql.text2sql(question, ingestion, pdsql.watsonxai)  # generate query with watsonx.ai
+``` 
+
+### Custom Language Model
+You can even plug-in a custom language model callback function as a parameter:
 
 ```python
 def my_model_callback(input):
